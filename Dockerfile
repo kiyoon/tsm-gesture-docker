@@ -110,14 +110,15 @@ RUN cd incubator-tvm/build && \
 RUN apt-get update && apt-get install protobuf-compiler libprotoc-dev -y && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
-RUN pip3 install onnx onnxsim
+RUN pip3 install onnx onnxsim mpmath flatbuffers sympy packaging humanfriendly coloredlogs onnxruntime
 
 
 RUN git clone https://github.com/mit-han-lab/temporal-shift-module
 
 RUN wget https://hanlab.mit.edu/projects/tsm/models/mobilenetv2_jester_online.pth.tar -P /temporal-shift-module/online_demo/
 
-#ENTRYPOINT ["/opt/conda/bin/conda", "run", "--no-capture-output", "-n", "tsm", "python", "temporal-shift-module/online_demo/main.py"]
+WORKDIR /temporal-shift-module/online_demo
+ENTRYPOINT ["/opt/conda/bin/conda", "run", "--no-capture-output", "-n", "tsm", "python", "main.py"]
 
 # RUN git clone https://github.com/opencv/opencv /opencv && \
 # 	cd /opencv && \
